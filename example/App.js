@@ -12,7 +12,7 @@ import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import M3AndroidToolkit from 'react-native-m3-android-toolkit';
 
-export default class App extends Component<{}> {
+export default class App extends Component {
   state = {
     status: 'starting',
     message: '--'
