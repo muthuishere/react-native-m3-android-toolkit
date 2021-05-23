@@ -1,5 +1,11 @@
-import { NativeModules } from 'react-native';
+import * as Permissions from './permissions';
+import * as Sms from './sms';
 
-const { M3AndroidToolkit } = NativeModules;
 
-export default M3AndroidToolkit;
+
+
+module.exports = {
+    ...Permissions,
+    ...Sms
+
+};

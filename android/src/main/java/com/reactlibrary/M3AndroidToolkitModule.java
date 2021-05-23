@@ -5,16 +5,16 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReadableMap;
-import com.reactlibrary.shared.AppException;
-import com.reactlibrary.context.ReactAppContextApi;
-import com.reactlibrary.context.AppContextApi;
-import com.reactlibrary.sim.SimService;
-import com.reactlibrary.sms.read.ReadService;
-import com.reactlibrary.sms.read.SmsOnReceiveService;
-import com.reactlibrary.sms.read.SmsReceivedMessage;
-import com.reactlibrary.sms.send.SendService;
-import com.reactlibrary.sms.send.SendSmsRequest;
-import com.reactlibrary.sms.send.SendSmsResult;
+import com.tools.m3.shared.AppException;
+import com.tools.m3.context.AppContextApi;
+import com.tools.m3.sim.SimDetail;
+import com.tools.m3.sim.SimService;
+import com.tools.m3.sms.read.ReadService;
+import com.tools.m3.sms.read.SmsOnReceiveService;
+import com.tools.m3.sms.read.SmsReceivedMessage;
+import com.tools.m3.sms.send.SendService;
+import com.tools.m3.sms.send.SendSmsRequest;
+import com.tools.m3.sms.send.SendSmsResult;
 
 import java.util.List;
 
@@ -54,11 +54,20 @@ public class M3AndroidToolkitModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void sendSms(ReadableMap data,Callback success,Callback error){
         try {
-            SendSmsResult sendSmsResult= sendService.sendSms(SendSmsRequest.createFrom(data));
+            SendSmsResult sendSmsResult= sendService.sendSms(createFrom(data));
             success.invoke(sendSmsResult);
         }catch (AppException e){
             error.invoke(e.getMessage());
         }
+    }
+
+    public static SendSmsRequest createFrom(ReadableMap data) {
+
+        SendSmsRequest sendSmsRequest=new SendSmsRequest();
+        sendSmsRequest.setMessage(data.getString("message"));
+        sendSmsRequest.setMobileNumber(data.getString("mobileNumber"));
+        sendSmsRequest.setSimIndex(data.getInt("simIndex"));
+        return sendSmsRequest;
     }
 
     @ReactMethod
@@ -84,6 +93,16 @@ public class M3AndroidToolkitModule extends ReactContextBaseJavaModule {
     public void readAllSms(Callback success,Callback error){
         try {
             List<SmsReceivedMessage> response= readService.getAllSms();
+            success.invoke(response);
+        }catch (AppException e){
+            error.invoke(e.getMessage());
+        }
+    }
+
+    @ReactMethod
+    public void getAllSims(Callback success,Callback error){
+        try {
+            List<SimDetail> response= simService.getAllSims();
             success.invoke(response);
         }catch (AppException e){
             error.invoke(e.getMessage());

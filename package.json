@@ -2,7 +2,7 @@
   "name": "react-native-m3-android-toolkit",
   "title": "React Native M3 Android Toolkit",
   "version": "1.0.0",
-  "description": "TODO",
+  "description": "A set of native modules to support react native",
   "main": "index.js",
   "files": [
     "README.md",
